@@ -1,0 +1,14 @@
+/*
+ Theme Name:   Twenty Seventeen Child
+ Theme URI:    http://example.com/twenty-fifteen-child/
+ Description:  Twenty Seventeen Child Theme
+ Author:       Boostfield
+ Author URI:   http://example.com
+ Template:     twentyseventeen
+ Version:      1.0.0
+ Text Domain:  twenty-seventeen-child
+*/
+@import url("../twentyseventeen/style.css");
+.entry-title a {
+    color: red;
+}
