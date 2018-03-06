@@ -15,6 +15,8 @@ class MetaSlide {
     public $settings = array(); // slideshow settings
 
 
+    public $slide_as_array  = array();
+
     /**
      * Constructor
      */

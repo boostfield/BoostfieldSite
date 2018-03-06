@@ -353,7 +353,7 @@ class MetaImageSlide extends MetaSlide {
      *
      * @return string slide html
      */
-    protected function get_public_slide() {
+    public function get_public_slide() {
 
         // get the image url (and handle cropping)
         // disable wp_image_editor if metadata does not exist for the slide
@@ -415,7 +415,8 @@ class MetaImageSlide extends MetaSlide {
         }
 
         $slide = apply_filters('metaslider_image_slide_attributes', $slide, $this->slider->ID, $this->settings);
-
+        $this->slide_as_array=$slide;
+        return $slide;
         // return the slide HTML
         switch ($this->settings['type']) {
             case "coin":

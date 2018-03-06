@@ -16,6 +16,7 @@ class MetaSlider {
     public $identifier = 0; // unique identifier
     public $slides = array(); // slides belonging to this slider
     public $settings = array(); // slider settings
+    public $slides_as_array = array();
 
     /**
      * Constructor
@@ -28,6 +29,7 @@ class MetaSlider {
         $this->settings = array_merge( $shortcode_settings, $this->get_settings() );
         $this->identifier = 'metaslider_' . $this->id;
         $this->populate_slides();
+        $this->populate_slides_as_array();
     }
 
     /**
@@ -160,6 +162,30 @@ class MetaSlider {
 
         $args = apply_filters('metaslider_populate_slides_args', $args, $this->id, $this->settings);
         return new WP_Query($args);
+    }
+
+    private function populate_slides_as_array() {
+        $slides = array();
+
+        $query = $this->get_slides();
+
+        while ( $query->have_posts() ) {
+            $query->next_post();
+
+            $type = get_post_meta( $query->post->ID, 'ml-slider_type', true );
+            $type = $type ? $type : 'image'; // backwards compatibility, fall back to 'image'
+
+            // skip over deleted media files
+            if ( $type == 'image' && get_post_type( $query->post->ID ) == 'ml-slide' && ! get_post_thumbnail_id( $query->post->ID ) ) {
+                continue;
+            }
+
+            if( $type=='image') {
+                $imgslide = new MetaImageSlide();
+                $imgslide->get_slide($query->post->ID,$this->id);
+                $this->slides_as_array[] = $imgslide->slide_as_array;
+            }
+        }
     }
 
     /**

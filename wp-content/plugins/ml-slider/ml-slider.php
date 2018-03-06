@@ -71,9 +71,26 @@ class MetaSliderPlugin {
         $this->setup_filters();
         $this->setup_shortcode();
         $this->register_slide_types();
+        $this->register_endpoint_api();
         $this->admin = new MetaSlider_Admin_Pages($this);
     }
 
+
+    private function register_endpoint_api(){
+        register_rest_route( 'metaslide/v1', '/(?P<id>\d+)', array(
+            'methods' => 'GET',
+            'callback' => array($this,'get_slides_of'),
+          ) );
+    }
+
+
+    function get_slides_of(WP_REST_Request $request){
+        $slider_id = (int)$request->get_param('id');
+        $slider = $this->set_slider($slider_id);
+        //return $this->slider->sliders_as_array;
+        return $this->slider->slides_as_array;
+    
+    }
 
     /**
      * Define MetaSlider constants
